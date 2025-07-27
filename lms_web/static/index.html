@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>Rust LMS</title>
+</head>
+<body>
+  <h1>Courses</h1>
+  <div id="courses"></div>
+  <pre id="ssh"></pre>
+  <script>
+    async function loadCourses() {
+      const resp = await fetch('/api/courses');
+      const courses = await resp.json();
+      const div = document.getElementById('courses');
+      courses.forEach(c => {
+        const btn = document.createElement('button');
+        btn.textContent = c.title;
+        btn.onclick = () => launch(c.id);
+        div.appendChild(btn);
+      });
+    }
+    async function launch(course) {
+      const learner = 'local';
+      const resp = await fetch('/api/launch', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({course, learner})
+      });
+      const data = await resp.json();
+      document.getElementById('ssh').textContent = `ssh -i key.pem ${data.user}@${data.host} -p ${data.port}`;
+    }
+    loadCourses();
+  </script>
+</body>
+</html>
