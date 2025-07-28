@@ -41,4 +41,5 @@ rayon = "1.10.0"
 osqp = "1.0.1"
 
 [workspace]
-members = ["orchestrator", "sim_agent", "grade_push"]
+members = ["orchestrator", "sim_agent", "grade_push", "lms_web"]
+
